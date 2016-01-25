@@ -4,7 +4,7 @@
 The docker image is Ubuntu 14.04 LTS with AmberTools v15 compiled with openmpi
 
 ## Pre condictions
-This step has to be done before you build the image since yu have to register.
+This step has to be done before building the image since you have to register.
 Download AmberTools from http://ambermd.org/AmberTools15-get.html
 
 Clone the repository and move AmberTools15.tar.bz2 to the dir containing the Dockerfile
@@ -31,3 +31,8 @@ $ docker run -it ubuntu_ambertools /bin/bash
 # make test.parallel
 ```
 
+Alternatively, run the tests directly:
+```
+$ docker run ubuntu_ambertools /bin/bash -c \
+'cd $AMBERHOME && export DO_PARALLEL="mpirun -np 4" && source $AMBERHOME/amber.sh && make test.parallel'
+```
