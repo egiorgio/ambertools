@@ -40,7 +40,6 @@ RUN pip install mako
 RUN pip install numpy
 RUN pip install scipy
 ADD AmberTools15.tar.bz2 /usr/local/
-ADD prova_amber.tgz /usr/local
 ENV PATH=$PATH:/usr/lib64/openmpi/bin/
 ENV AMBERHOME=/usr/local/amber14
 RUN cd $AMBERHOME && ./configure -noX11 gnu && make install
@@ -48,6 +47,7 @@ RUN cd $AMBERHOME && ./configure -mpi -noX11 gnu && make install
 
 RUN mkdir -p /var/run/sshd
 # set a root password, in case cloud-init doesn't work 
+# PLEASE set your own
 RUN echo 'root:c@r0nt3' | chpasswd
 RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 
@@ -56,7 +56,7 @@ RUN sed -i 's/Port 22/Port 22\nPort 2222/' /etc/ssh/sshd_config
 # SSH login fix. Otherwise user is kicked off after login
 RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
 # if dns server is not injected
-RUN echo "nameserver 193.206.208.78" >> /etc/resolv.conf
+RUN echo "nameserver 8.8.8.8" >> /etc/resolv.conf
 
 # clean cloud-init stuff
 RUN rm -fr /var/lib/cloud/*
